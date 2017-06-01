@@ -1,0 +1,10 @@
+{
+  "name": "addinExtendDevice",
+  "private": true,
+  "dependencies": {
+    "vue": "^2.3.3"
+  },
+  "devDependencies": {
+    "dialog-polyfill": "^0.4.3"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "extend device sample",
+  "supportEmail": "support@geotab.com",
+  "version": "0.0.1",
+  "items": [{
+    "url": "addinExtendDevice.html",
+    "path": "AdministrationLink/",
+    "menuName": {
+      "en": "Extend Device"
+    },
+    "icon": "images/icon.svg"
+  }],
+  "dev": {
+    "root": "addinExtendDevice",
+    "dist": {
+      "host": "https://cdn.rawgit.com/Geotab/addin-extend-device/master/dist/"
+    }
+  }
+}
