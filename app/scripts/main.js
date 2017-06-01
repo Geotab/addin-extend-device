@@ -6,6 +6,7 @@ geotab.addin.addinExtendDevice = function () {
 
   let addInId = 'a8sQ4W7bK5Uy6HOnUTAHlJw';
   let api;
+  let state;
 
   let addin;
 
@@ -182,6 +183,10 @@ geotab.addin.addinExtendDevice = function () {
               return;
             }
 
+            state.setState({
+              device: val
+            });
+
             store.fetch(val).then(result => {
               addin.properties = result.properties;
               addin.propertiesId = result.propertiesId;
@@ -207,13 +212,14 @@ geotab.addin.addinExtendDevice = function () {
      */
     focus: function (freshApi, freshState) {
       api = freshApi;
+      state = freshState;
 
       api.call('Get', {
         typeName: 'Device',
         resultsLimit: 500,
         search: {
           fromDate: new Date().toISOString(),
-          groups: freshState.getGroupFilter()
+          groups: state.getGroupFilter()
         }
       }, devices => {
         devices.sort((a, b) => {
@@ -229,6 +235,11 @@ geotab.addin.addinExtendDevice = function () {
         });
 
         addin.devices = devices;
+
+        let args = state.getState();
+        if (args.device) {
+          addin.selected = args.device;
+        }
 
       }, errorHandler);
     },
