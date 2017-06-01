@@ -1,1 +1,1 @@
-#addinExtendDevice .hidden{display:none}
+#addinExtendDevice .hidden{opacity:0;transition:opacity 2s ease-in}

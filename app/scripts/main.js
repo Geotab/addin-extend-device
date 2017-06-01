@@ -106,9 +106,12 @@ geotab.addin.addinExtendDevice = function () {
   let errorTimeout;
   let errorHandler = msg => {
     clearTimeout(errorTimeout);
-    addin.errorMessage = msg;
+    addin.error = {
+      message: msg,
+      isHidden: false
+    };
     errorTimeout = setTimeout(() => {
-      addin.errorMessage = ' ';
+      addin.error.isHidden = true;
     }, 5000);
   };
 
@@ -128,7 +131,10 @@ geotab.addin.addinExtendDevice = function () {
       addin = new Vue({
         el: '#addinExtendDevice',
         data: {
-          errorMessage: ' ',
+          error: {
+            message: '',
+            isHidden: true
+          },
           selected: null,
           newProperty: {},
           devices: [],
