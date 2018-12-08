@@ -14,7 +14,7 @@ Add the configuation below to the to the system setting -> addins section of the
     "menuName": {
       "en": "Extend Device"
     },
-    "icon": "https://cdn.rawgit.com/Geotab/addin-extend-device/master/dist/images/icon.svg"
+    "icon": "https://cdn.jsdelivr.net/gh/Geotab/addin-extend-device@master/dist/images/icon.svg"
   }]
 }
 ```
