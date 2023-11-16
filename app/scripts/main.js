@@ -1,6 +1,7 @@
 /**
- * @returns {{initialize: Function, focus: Function, blur: Function}}
+ * @returns {{initialize: Function, focus: Function, blur: Function, startup; Function, shutdown: Function}}
  */
+
 geotab.addin.addinExtendDevice = function () {
   'use strict';
 
@@ -22,18 +23,18 @@ geotab.addin.addinExtendDevice = function () {
     fetch: devieId => {
       return new Promise((resolve, reject) => {
         api.call('Get', {
-            typeName: 'AddInData',
-            search: {
-              addInId: addInId,
-              whereClause: `device.id = "${devieId}"`
-            }
-          },
+          typeName: 'AddInData',
+          search: {
+            addInId: addInId,
+            whereClause: `device.id = "${devieId}"`
+          }
+        },
           results => {
             let propertiesId = null;
             let properties = [];
 
             if (results.length > 0) {
-              let data = JSON.parse(results[0].data);
+              let data = results[0].details;
               properties = Object.keys(data.properties || {}).map(key => {
                 return new Property(key, data.properties[key], true);
               });
@@ -68,15 +69,13 @@ geotab.addin.addinExtendDevice = function () {
             typeName: 'AddInData',
             entity: {
               addInId,
-              groups: [{
-                id: 'GroupCompanyId' // TODO: should be user's groups
-              }],
-              data: JSON.stringify({
+              groups: [],
+              details: {
                 device: {
                   id: id
                 },
                 properties: simpleProperties
-              })
+              }
             }
           }, resolve, reject);
         });
@@ -98,7 +97,7 @@ geotab.addin.addinExtendDevice = function () {
         });
       };
 
-      // in the current implementation set cannot remove properties, the data object will be extended with the data propert of the provided data
+      // in the current implementation set cannot remove properties, the data object will be extended with the data property of the provided data
       // for that reason we will remove the existing data and replace with the updated data
       return remove(dataId).then(add(deviceId, props));
     }
@@ -116,7 +115,11 @@ geotab.addin.addinExtendDevice = function () {
     }, 5000);
   };
 
+  // the root container
+  var elAddin = document.getElementById('addinExtendDevice');
+
   return {
+
     /**
      * initialize() is called only once when the Add-In is first loaded. Use this function to initialize the
      * Add-In's state such as default values or make API requests (MyGeotab or external) to ensure interface
@@ -128,6 +131,10 @@ geotab.addin.addinExtendDevice = function () {
      *        for display to the user.
      */
     initialize: function (freshApi, freshState, initializeCallback) {
+      // Loading translations if available
+      if (freshState.translate) {
+        freshState.translate(elAddin || '');
+      }
 
       addin = new Vue({
         el: '#addinExtendDevice',
@@ -207,9 +214,9 @@ geotab.addin.addinExtendDevice = function () {
      * the global state of the MyGeotab application changes, for example, if the user changes the global group
      * filter in the UI.
      *
-     * @param {object} frashApi - The GeotabApi object for making calls to MyGeotab.
+     * @param {object} freshApi - The GeotabApi object for making calls to MyGeotab.
      * @param {object} freshState - The page state object allows access to URL, page navigation and global group filter.
-     */
+    */
     focus: function (freshApi, freshState) {
       api = freshApi;
       state = freshState;
@@ -242,13 +249,22 @@ geotab.addin.addinExtendDevice = function () {
         }
 
       }, errorHandler);
+
+      elAddin.className = '';
+      // show main content
     },
 
     /**
      * blur() is called whenever the user navigates away from the Add-In.
      *
      * Use this function to save the page state or commit changes to a data store or release memory.
-     */
-    blur: function () {}
+     *
+     * @param {object} freshApi - The GeotabApi object for making calls to MyGeotab.
+     * @param {object} freshState - The page state object allows access to URL, page navigation and global group filter.
+    */
+    blur: function () {
+      // hide main content
+      elAddin.className += ' hidden';
+    }
   };
 };
