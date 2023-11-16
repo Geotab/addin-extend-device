@@ -2,12 +2,14 @@
   "name": "extend device sample",
   "supportEmail": "support@geotab.com",
   "version": "0.0.1",
-  "items": [{
-    "url": "https://cdn.jsdelivr.net/gh/Geotab/addin-extend-device@master/dist/addinExtendDevice.html",
-    "path": "AdministrationLink/",
-    "menuName": {
-      "en": "Extend Device"
-    },
-    "icon": "https://cdn.jsdelivr.net/gh/Geotab/addin-extend-device@master/dist/images/icon.svg"
-  }]
+  "items": [
+    {
+      "url": "https://cdn.jsdelivr.net/gh/jyalenkatian/addin-extend-device@INTGR-77/dist/addinExtendDevice.html",
+      "path": "AdministrationLink/",
+      "menuName": {
+        "en": "Extend Device"
+      },
+      "icon": "https://cdn.jsdelivr.net/gh/jyalenkatian/addin-extend-device@INTGR-77/dist/images/icon.svg"
+    }
+  ]
 }
